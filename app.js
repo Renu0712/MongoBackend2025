@@ -16,7 +16,8 @@ mongoose
 
      const userSchema = new mongoose.Schema({
         name : {type:String, required:true },
-        email : {type:String, required:true}
+        email : {type:String, required:true},
+        org : {type:String, required:true}
      });
 
      const User = mongoose.model('user', userSchema);
@@ -26,8 +27,8 @@ mongoose
      //Create a new user
      app.post('/users', async (req,res)=>{
         try{
-            const {name,email} = req.body;
-            const user = new User({name,email});
+            const {name,email, org} = req.body;
+            const user = new User({name,email,org});
             await user.save();
             res.status(201).send(user);
         }
@@ -65,9 +66,9 @@ mongoose
       app.put('/users/:id', async (req,res)=>{
          try{
             const {id} = req.params;
-            const {name,email} = req.body;
+            const {name,email,org} = req.body;
             const user = await User.findByIdAndUpdate
-            (id,{name,email},{new:true}); 
+            (id,{name,email,org},{new:true}); 
             if(!user){
                return res.status(404).send('User not found');
             }  
